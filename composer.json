@@ -1,7 +1,7 @@
 {
 	"name": "sharkydog/async",
 	"description": "Abstract and helper classes for asynchronous PHP execution",
-	"homepage": "https://github.com/sharkydog",
+	"homepage": "https://github.com/sharkydog/async",
 	"authors": [{
 		"name": "Aleksandar Dimitrov",
 		"email": "admin@sharkydog.info",
