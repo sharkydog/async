@@ -15,6 +15,8 @@ class Pool {
 			throw new \Exception('Pool: class '.$wClass.' is not '.Worker::class);
 		}
 		
+		if($pSizeMax <= 0) $pSizeMax = 1;
+		
 		$this->wClass = $wClass;
 		$this->wArgv = $wArgv;
 		$this->pSizeMax = $pSizeMax;
@@ -22,6 +24,11 @@ class Pool {
 	
 	public function __destruct() {
 		Debug::log(3, 'destruct: '.static::class);
+	}
+	
+	public function close() {
+		$this->setSize(1);
+		$this->pSizeMax = 0;
 	}
 	
 	public function setSize(int $pSizeMax, int $pSizeMin=0) {
@@ -75,6 +82,8 @@ class Pool {
 				}
 			}
 		}
+		
+		if(!$this->pSizeMax) throw new \Exception(static::class.' is closed');
 		
 		$this->workers[] = [
 			'worker' => new $this->wClass(...$this->wArgv),
