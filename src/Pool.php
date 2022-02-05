@@ -26,15 +26,10 @@ class Pool {
 		Debug::log(3, 'destruct: '.static::class);
 	}
 	
-	public function close() {
-		$this->setSize(1);
-		$this->pSizeMax = 0;
-	}
-	
 	public function setSize(int $pSizeMax, int $pSizeMin=0) {
 		if($pSizeMin < 0) $pSizeMin = 0;
-		if($pSizeMax <= 0) $pSizeMax = 1;
-		if($pSizeMax < $pSizeMin) $pSizeMax = $pSizeMin;
+		if($pSizeMax < 0) $pSizeMax = 0;
+		if($pSizeMax < $pSizeMin) $pSizeMin = $pSizeMax;
 		
 		$this->pSizeMax = $pSizeMax;
 		$this->pSizeMin = $pSizeMin;
@@ -114,7 +109,7 @@ class Pool {
 	
 	private function _remove($idxW) {
 		if(!isset($this->workers[$idxW])) return;
-		if($this->workers[$idxW]['keep']) return;
+		if($this->workers[$idxW]['keep'] && $this->pSizeMax) return;
 		$this->remove($idxW);
 	}
 	
