@@ -11,8 +11,9 @@ class Results {
 		foreach($results as $id => $result) $this->add($result,$id);
 		$this->clearOnDone = $clearOnDone;
 	}
+	
 	public function __destruct() {
-		ppn('destruct: '.static::class);
+		Debug::log(3, 'destruct: '.static::class);
 	}
 	
 	public function clearOnDone(bool $clearOnDone=true) {

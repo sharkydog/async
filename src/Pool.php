@@ -19,8 +19,9 @@ class Pool {
 		$this->wArgv = $wArgv;
 		$this->pSizeMax = $pSizeMax;
 	}
+	
 	public function __destruct() {
-		ppn('destruct: '.static::class);
+		Debug::log(3, 'destruct: '.static::class);
 	}
 	
 	public function setSize(int $pSizeMax, int $pSizeMin=0) {
@@ -74,13 +75,14 @@ class Pool {
 				}
 			}
 		}
-		ppn('new worker');
+		
 		$this->workers[] = [
 			'worker' => new $this->wClass(...$this->wArgv),
 			'results' => new Results,
 			'keep' => false
 		];
 		$idxW = array_key_last($this->workers);
+		Debug::log(3, 'new worker: ('.$idxW.') '.$this->wClass);
 		
 		$this->workers[$idxW]['worker']->onRun(function($result) use($idxW) {
 			$this->_onRun($idxW,$result);
@@ -117,7 +119,8 @@ class Pool {
 		if($this->workers[$idxW]['results']->countDone()) {
 			$this->workers[$idxW]['results']->clearDone();
 		}
-		ppn('remove worker');
+		
+		Debug::log(3, 'remove worker: ('.$idxW.') '.$this->wClass);
 		unset($this->workers[$idxW]);
 	}
 	

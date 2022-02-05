@@ -8,6 +8,10 @@ abstract class Worker {
 	abstract protected function _run(\Closure $task, array $argv=[]): Result;
 	abstract protected function _kill(): void;
 	
+	public function __destruct() {
+		Debug::log(3, 'destruct: '.static::class);
+	}
+	
 	final public function onRun(callable $onRun) {
 		if($this->killed) throw new \Exception(static::class.' is killed');
 		$this->onRun[] = $onRun;

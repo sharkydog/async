@@ -8,6 +8,10 @@ abstract class Result {
 	abstract protected function _done(): bool;
 	abstract protected function _value();
 	
+	public function __destruct() {
+		Debug::log(3, 'destruct: '.static::class);
+	}
+	
 	final public function onDone(callable $onDone) {
 		$this->onDone[] = $onDone;
 	}
